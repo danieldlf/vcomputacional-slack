@@ -211,3 +211,4 @@ ENV/
 # mkdocs documentation
 /site
 .vscode/
+amarante.crt
