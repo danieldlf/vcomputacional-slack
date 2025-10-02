@@ -1,0 +1,15 @@
+services:
+  vcomputacional-slack:
+    build: .
+    container_name: vcomputacional-slack
+    restart: always
+    environment:
+      - SLACK_BOT_TOKEN=${SLACK_BOT_TOKEN}
+      - SLACK_CHANNEL_ID=${SLACK_CHANNEL_ID}
+      - API_URL=${API_URL}
+      - API_KEY=${API_KEY}
+      - RESTAURANT_CAPACITIES=${RESTAURANT_CAPACITIES}
+      - TZ=America/Recife
+    volumes:
+      - ./data:/app/data        # Persistência do state.json
+      - ./logs:/app/logs        # Persistência de logs

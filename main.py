@@ -25,6 +25,7 @@ MEALS = [
     {"nome": "Café da Manhã", "start": "07:00", "end": "10:00", "interval_min": 30},
     {"nome": "Almoço",        "start": "12:00", "end": "15:00", "interval_min": 30},
     {"nome": "Jantar",        "start": "19:00", "end": "22:00", "interval_min": 30},
+    {"nome": "Teste Docker 2", "start": "18:20", "end": "18:25", "interval_min": 1},
 ]
 
 # Capacidades por restaurante (opcional via .env em JSON)
