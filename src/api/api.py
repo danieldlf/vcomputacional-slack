@@ -5,6 +5,10 @@ import urllib3
 from dotenv import load_dotenv
 from typing import Dict, Any
 
+from src.log import Logger
+
+logger = Logger().get_logger()
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 load_dotenv()
 
@@ -54,4 +58,5 @@ class PortalAPIClient:
                 break
             page += 1
 
+        logger.info(f"Fetched {len(all_items)} items from {start_date} to {end_date}")
         return all_items
