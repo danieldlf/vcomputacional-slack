@@ -72,7 +72,8 @@ def process_interval(meal_name, start_dt, end_dt, state, capacities, alpha=0.15)
 
     for rest, vals in resumo.items():
         e = vals["entradas"]
-        s = ajustar_saidas(vals["saidas"], alpha)
+        # s = ajustar_saidas(vals["saidas"], alpha)
+        s = vals["saidas"]
         delta = e - s
 
         rest_state = state[today][meal_name].setdefault(rest, {
