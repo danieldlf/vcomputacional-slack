@@ -144,6 +144,14 @@ def send_meal_summary(meal_name, state, capacities):
 
 # ------------------- Agendamento -------------------
 
+def run_interval_job(meal_name, interval_min, state, capacities):
+    now = datetime.now(TZ).replace(second=0, microsecond=0)
+    start = now - timedelta(minutes=interval_min)
+    process_interval(meal_name, start, now, state, capacities)
+
+def run_meal_summary(meal_name, state, capacities):
+    send_meal_summary(meal_name, state, capacities)
+
 def setup_schedule(state, capacities):
     for meal in MEALS:
         start_h, start_m = map(int, meal["start"].split(":"))
@@ -155,10 +163,21 @@ def setup_schedule(state, capacities):
 
         t = t + timedelta(minutes=interval)
         while t <= end_t:
-            schedule.every().day.at(t.strftime("%H:%M")).do(process_interval, meal["nome"], t - timedelta(minutes=interval), t, state, capacities)
+            schedule.every().day.at(t.strftime("%H:%M")).do(
+                run_interval_job, 
+                meal_name=meal["nome"], 
+                interval_min=interval, 
+                state=state, 
+                capacities=capacities
+            )
             t += timedelta(minutes=interval)
 
-        schedule.every().day.at(f"{end_h:02d}:{end_m:02d}").do(send_meal_summary, meal["nome"], state, capacities)
+        schedule.every().day.at(f"{end_h:02d}:{end_m:02d}").do(
+            run_meal_summary, 
+            meal_name=meal["nome"], 
+            state=state, 
+            capacities=capacities
+        )
 
 # ------------------- Main loop -------------------
 
