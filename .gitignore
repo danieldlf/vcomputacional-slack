@@ -212,3 +212,4 @@ ENV/
 /site
 .vscode/
 amarante.crt
+state.json
