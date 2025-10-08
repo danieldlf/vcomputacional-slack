@@ -13,6 +13,9 @@ from src.log import Logger
 
 logger = Logger().get_logger()
 
+# Constante global de erro
+UNCERTAINTY_RATE = 0.1
+
 # Arquivo de estado persistente
 STATE_FILE = "data/state.json"
 CAPACITY_JSON = "data/capacities.json"
@@ -93,11 +96,18 @@ def process_interval(meal_name, start_dt, end_dt, state, capacities, alpha=0.15)
         })
 
         cap = capacities.get(rest)
-        occ = f" ({int(round(100*rest_state['headcount']/cap))}% de {cap})" if cap else ""
+        margem = int(round(rest_state["headcount"] * UNCERTAINTY_RATE))
+        headcount_txt = f"{rest_state['headcount']} ± {margem}"
+        if cap:
+            occ = round(100 * rest_state["headcount"] / cap)
+            occ_margem = round(100 * margem / cap)
+            occ_txt = f"{occ}% ± {occ_margem}% de {cap}"
+        else:
+            occ_txt = ""
         texto = (
             f"*{rest}*\n"
             f"Entradas: {rest_state['entradas']} | Saídas: {rest_state['saidas']} | Δ {rest_state['entradas'] - rest_state['saidas']}\n"
-            f"Pessoas no restaurante: {rest_state['headcount']}{occ}"
+            f"Pessoas no restaurante: {headcount_txt} ({occ_txt})"
         )
         blocks.append({"type": "section", "text": {"type": "mrkdwn", "text": texto}})
         blocks.append({"type": "divider"})
