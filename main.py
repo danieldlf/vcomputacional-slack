@@ -25,9 +25,9 @@ TZ = ZoneInfo("America/Recife")
 
 # Configuração das refeições
 MEALS = [
-    {"nome": "Café da Manhã", "start": "07:00", "end": "10:00", "interval_min": 30},
-    {"nome": "Almoço",        "start": "12:00", "end": "15:00", "interval_min": 30},
-    {"nome": "Jantar",        "start": "19:00", "end": "22:00", "interval_min": 30},
+    {"nome": "Café da Manhã", "start": "07:00", "end": "10:30", "interval_min": 30},
+    {"nome": "Almoço",        "start": "12:00", "end": "15:30", "interval_min": 30},
+    {"nome": "Jantar",        "start": "19:00", "end": "22:30", "interval_min": 30},
 ]
 
 # Capacidades por restaurante (opcional via .env em JSON)
@@ -97,17 +97,17 @@ def process_interval(meal_name, start_dt, end_dt, state, capacities, alpha=0.15)
 
         cap = capacities.get(rest)
         margem = int(round(rest_state["headcount"] * UNCERTAINTY_RATE))
-        headcount_txt = f"{rest_state['headcount']} ± {margem}"
+        headcount_txt = f"{rest_state['headcount']}"
         if cap:
             occ = round(100 * rest_state["headcount"] / cap)
             occ_margem = round(100 * margem / cap)
-            occ_txt = f"{occ}% ± {occ_margem}% de {cap}"
+            occ_txt = f"{occ}% de {cap}"
         else:
             occ_txt = ""
         texto = (
             f"*{rest}*\n"
-            f"Entradas: {rest_state['entradas']} | Saídas: {rest_state['saidas']} | Δ {rest_state['entradas'] - rest_state['saidas']}\n"
-            f"Pessoas no restaurante: {headcount_txt} ({occ_txt})"
+            f"Entradas: {rest_state['entradas']} | Saídas: {rest_state['saidas']}\n"
+            f"Pessoas no restaurante: {headcount_txt}"
         )
         blocks.append({"type": "section", "text": {"type": "mrkdwn", "text": texto}})
         blocks.append({"type": "divider"})
@@ -142,9 +142,9 @@ def send_meal_summary(meal_name, state, capacities):
 
         texto = (
             f"*{rest}*\n"
-            f"Total Entradas: {totals_e} • Total Saídas: {totals_s} • Δ {totals_delta}\n"
+            f"Total Entradas: {totals_e} • Total Saídas: {totals_s}\n"
             f"Pico de fluxo: {pico_fluxo_txt}\n"
-            f"Pico de pessoas: {pico_headcount}{occ_peak}"
+            f"Pico de pessoas: {pico_headcount}"
         )
         blocks.append({"type": "section", "text": {"type": "mrkdwn", "text": texto}})
         blocks.append({"type": "divider"})
