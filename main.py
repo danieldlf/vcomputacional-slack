@@ -27,7 +27,7 @@ TZ = ZoneInfo("America/Recife")
 MEALS = [
     {"nome": "Café da Manhã", "start": "07:00", "end": "10:30", "interval_min": 30},
     {"nome": "Almoço",        "start": "12:00", "end": "15:30", "interval_min": 30},
-    {"nome": "Jantar",        "start": "19:00", "end": "22:30", "interval_min": 30},
+    {"nome": "Jantar",        "start": "19:00", "end": "22:00", "interval_min": 30},
 ]
 
 # Capacidades por restaurante (opcional via .env em JSON)
